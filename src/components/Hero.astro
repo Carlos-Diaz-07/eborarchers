@@ -1,0 +1,105 @@
+---
+interface Props {
+  image: string;
+  title: string;
+  subtitle?: string;
+  ctaText?: string;
+  ctaHref?: string;
+}
+
+const { image, title, subtitle, ctaText, ctaHref } = Astro.props;
+---
+
+<section class="hero" aria-label={title}>
+  <img
+    src={image}
+    alt=""
+    role="presentation"
+    class="hero-bg"
+    loading="eager"
+    fetchpriority="high"
+    decoding="async"
+  />
+  <div class="hero-overlay"></div>
+  <div class="container hero-content">
+    <h1 class="hero-title">{title}</h1>
+    {subtitle && <p class="hero-subtitle">{subtitle}</p>}
+    {ctaText && ctaHref && (
+      <div class="hero-actions">
+        <a href={ctaHref} class="btn btn-gold">{ctaText}</a>
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    min-height: 480px;
+    max-height: 700px;
+    height: 70vh;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(11, 61, 46, 0.75) 0%,
+      rgba(11, 61, 46, 0.3) 100%
+    );
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding-bottom: var(--space-12);
+  }
+
+  .hero-title {
+    font-size: var(--text-hero);
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    max-width: 14ch;
+  }
+
+  .hero-subtitle {
+    font-size: var(--text-lg);
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: var(--space-4);
+    max-width: 40ch;
+  }
+
+  .hero-actions {
+    margin-top: var(--space-8);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 768px) {
+    .hero {
+      min-height: 520px;
+    }
+
+    .hero-content {
+      padding-bottom: var(--space-16);
+    }
+  }
+</style>

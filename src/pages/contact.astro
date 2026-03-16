@@ -1,0 +1,482 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title="Contact Us - Ebor Archers of York" description="Get in touch with Ebor Archers of York. Contact our club chairman Ray Chaplin for membership enquiries.">
+  
+    <Hero
+      image={`${base}/images/heroes/home3.jpg`}
+      title="Contact Us"
+      subtitle="Get in touch with Ebor Archers"
+    />
+
+    <section class="contact" aria-labelledby="contact-heading">
+      <div class="container">
+        <div class="contact-layout">
+          <!-- Contact Form -->
+          <div class="form-column">
+            <SectionHeading title="Send Us a Message" subtitle="We'd love to hear from you" />
+
+            <form
+              action="https://api.web3forms.com/submit"
+              method="POST"
+              class="contact-form"
+              id="contact-form"
+              novalidate
+            >
+              <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE" />
+              <input type="hidden" name="subject" value="New enquiry from Ebor Archers website" />
+
+              <p class="required-legend">Fields marked with * are required</p>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="first-name">First name *</label>
+                  <input
+                    type="text"
+                    id="first-name"
+                    name="first_name"
+                    required
+                    minlength="2"
+                    autocomplete="given-name"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="last-name">Last name</label>
+                  <input
+                    type="text"
+                    id="last-name"
+                    name="last_name"
+                    autocomplete="family-name"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email address *</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  autocomplete="email"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="phone">Contact number (optional)</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  autocomplete="tel"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="message">Your message *</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  required
+                  minlength="10"
+                  rows="6"
+                ></textarea>
+              </div>
+
+              <button type="submit" class="btn-primary">Send Message</button>
+
+              <div id="form-status" role="status" aria-live="polite" class="form-status"></div>
+            </form>
+          </div>
+
+          <!-- Contact Info -->
+          <aside class="info-column">
+            <div class="info-card">
+              <h3>Club Chairman</h3>
+              <address class="chairman-info">
+                <p class="chairman-name">Ray Chaplin</p>
+                <p>
+                  <a href="mailto:ray.chaplin@ntlworld.com">ray.chaplin@ntlworld.com</a>
+                </p>
+              </address>
+              <p class="info-note">
+                Our club chairman will normally reach out and contact prospective new members.
+              </p>
+            </div>
+
+            <div class="info-card">
+              <h3>Main Venue</h3>
+              <address>
+                <p>York RI Sports Ground</p>
+                <p>New Lane, Holgate</p>
+                <p>York, YO24 4NX</p>
+              </address>
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=York+RI+Sports+Ground+New+Lane+Holgate+York+YO24+4NX"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="map-link"
+              >
+                View on Google Maps
+                <span class="visually-hidden">(opens in new tab)</span>
+              </a>
+            </div>
+
+            <div class="info-card affiliations">
+              <h3>Affiliated With</h3>
+              <div class="affiliation-logos">
+                <img src={`${base}/images/logos/archery-gb.png`} alt="Archery GB" width="60" height="60" loading="lazy" />
+                <img src={`${base}/images/logos/yorkshire-archery-association.png`} alt="Yorkshire Archery Association" width="60" height="60" loading="lazy" />
+                <img src={`${base}/images/logos/northern-counties-archery-society.png`} alt="Northern Counties Archery Society" width="60" height="60" loading="lazy" />
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const status = document.getElementById('form-status') as HTMLDivElement;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    form.querySelectorAll('.error-message').forEach((el) => el.remove());
+    form.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
+
+    const errors: { field: HTMLInputElement | HTMLTextAreaElement; message: string }[] = [];
+    const firstName = form.querySelector('#first-name') as HTMLInputElement;
+    const email = form.querySelector('#email') as HTMLInputElement;
+    const message = form.querySelector('#message') as HTMLTextAreaElement;
+
+    if (!firstName.value.trim() || firstName.value.trim().length < 2) {
+      errors.push({ field: firstName, message: 'Please enter your first name (at least 2 characters)' });
+    }
+    if (!email.value.trim() || !email.validity.valid) {
+      errors.push({ field: email, message: 'Please enter a valid email address, e.g. name@example.com' });
+    }
+    if (!message.value.trim() || message.value.trim().length < 10) {
+      errors.push({ field: message, message: 'Please enter a message (at least 10 characters)' });
+    }
+
+    if (errors.length > 0) {
+      errors.forEach(({ field, message }) => {
+        field.setAttribute('aria-invalid', 'true');
+        const errorEl = document.createElement('p');
+        errorEl.className = 'error-message';
+        errorEl.id = `${field.id}-error`;
+        errorEl.textContent = message;
+        field.setAttribute('aria-describedby', errorEl.id);
+        field.parentElement?.appendChild(errorEl);
+      });
+      errors[0].field.focus();
+      return;
+    }
+
+    const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+      });
+
+      if (response.ok) {
+        status.innerHTML = '<p class="success-message">Thank you for your message. We will be in touch soon.</p>';
+        form.reset();
+      } else {
+        status.innerHTML = '<p class="error-message">Something went wrong. Please try again or email us directly.</p>';
+      }
+    } catch {
+      status.innerHTML = '<p class="error-message">Something went wrong. Please try again or email us directly.</p>';
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Message';
+    }
+  });
+</script>
+
+<style>
+  .container {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--space-4);
+  }
+
+  @media (min-width: 768px) {
+    .container {
+      padding-inline: var(--space-8);
+    }
+  }
+
+  .contact {
+    padding: var(--space-16) 0;
+    background: var(--color-bg);
+  }
+
+  .contact-layout {
+    display: grid;
+    gap: var(--space-12);
+  }
+
+  @media (min-width: 768px) {
+    .contact-layout {
+      grid-template-columns: 3fr 2fr;
+      gap: var(--space-16);
+    }
+  }
+
+  /* Form */
+  .required-legend {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-6);
+    margin-top: var(--space-6);
+  }
+
+  .form-row {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 640px) {
+    .form-row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .form-group {
+    margin-bottom: var(--space-5);
+  }
+
+  .form-group label {
+    display: block;
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-text);
+    margin-bottom: var(--space-2);
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    min-height: 44px;
+    padding: var(--space-3);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    color: var(--color-text);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .form-group textarea {
+    min-height: 140px;
+    resize: vertical;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-green-600);
+    box-shadow: 0 0 0 3px rgba(20, 122, 79, 0.15);
+  }
+
+  .form-group input[aria-invalid="true"],
+  .form-group textarea[aria-invalid="true"] {
+    border-color: var(--color-error);
+  }
+
+  .btn-primary {
+    display: inline-block;
+    background: var(--color-green-800);
+    color: white;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 12px 28px;
+    border-radius: var(--radius-md);
+    border: none;
+    cursor: pointer;
+    min-height: 44px;
+    transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .btn-primary:hover {
+    background: var(--color-green-700);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(15, 80, 56, 0.25);
+  }
+
+  .btn-primary:focus-visible {
+    outline: 2px solid var(--color-gold-600);
+    outline-offset: 2px;
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  @media (max-width: 639px) {
+    .btn-primary {
+      width: 100%;
+    }
+  }
+
+  .form-status :global(.success-message) {
+    margin-top: var(--space-4);
+    padding: var(--space-4);
+    background: #e8f5ee;
+    color: #0F5038;
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+  }
+
+  :global(.error-message) {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    color: var(--color-error);
+    margin-top: var(--space-1);
+  }
+
+  /* Info Column */
+  .info-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .info-card {
+    background: var(--color-bg-alt);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    border: 1px solid var(--color-border);
+  }
+
+  .info-card h3 {
+    font-family: var(--font-heading);
+    font-size: var(--text-h4);
+    font-weight: 600;
+    color: var(--color-green-800);
+    margin-bottom: var(--space-4);
+  }
+
+  .info-card address {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    font-style: normal;
+  }
+
+  .info-card address p {
+    margin-bottom: var(--space-1);
+  }
+
+  .chairman-name {
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: var(--space-2);
+  }
+
+  .info-card address a {
+    color: var(--color-green-600);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .info-card address a:hover {
+    color: var(--color-green-800);
+    text-decoration: underline;
+  }
+
+  .info-note {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .map-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-green-600);
+    text-decoration: none;
+    margin-top: var(--space-4);
+    transition: color var(--transition-fast);
+  }
+
+  .map-link:hover {
+    color: var(--color-green-800);
+  }
+
+  .map-link:focus-visible {
+    outline: 2px solid var(--color-gold-600);
+    outline-offset: 2px;
+  }
+
+  .affiliation-logos {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .affiliation-logos img {
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: filter var(--transition-normal), opacity var(--transition-normal);
+  }
+
+  .affiliation-logos img:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .form-group input,
+    .form-group textarea,
+    .btn-primary,
+    .map-link,
+    .affiliation-logos img {
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>

@@ -1,0 +1,12 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <title>Ebor</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+<style>html,body{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}body{line-height:1}html body{font-size:16px}*{font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;line-height:1.3}ebor-root{padding:3rem;display:grid;gap:1.5rem;grid-template-columns:.2fr 1fr;grid-template-areas:"nav    nav    " "logos  main   " "footer footer "}@media (max-width: 870px){ebor-root{padding:.8rem;grid-template-areas:"nav    nav     nav       nav" "main  main   main   main" "logos  logos   logos   logos" "footer footer footer footer"}}</style><link rel="stylesheet" href="styles.bbd9e7739307e7c7.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.bbd9e7739307e7c7.css"></noscript></head>
+<body>
+  <ebor-root></ebor-root>
+<script src="runtime.aa8c3a86ce59efe5.js" type="module"></script><script src="polyfills.75c24d50099a8911.js" type="module"></script><script src="main.48037fbf61d8de0c.js" type="module"></script>
+
+</body></html>

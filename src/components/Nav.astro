@@ -1,0 +1,325 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const currentPath = Astro.url.pathname;
+
+const navItems = [
+  { label: 'Home', href: `${base}/` },
+  { label: 'Venues & Times', href: `${base}/venues-and-times/` },
+  { label: 'Gallery', href: `${base}/gallery/` },
+  { label: 'News', href: `${base}/news/` },
+];
+
+const ctaItem = { label: 'Join Us', href: `${base}/join-us/` };
+
+function isActive(href: string): boolean {
+  if (href === `${base}/`) return currentPath === `${base}/`;
+  return currentPath.startsWith(href);
+}
+---
+
+<header class="site-header" role="banner">
+  <div class="container header-inner">
+    <a href={`${base}/`} class="logo-link" aria-label="Ebor Archers of York — Home">
+      <img
+        src={`${base}/images/logos/ebor-archers.png`}
+        alt=""
+        class="logo-img"
+        width="40"
+        height="40"
+      />
+      <span class="logo-text">Ebor Archers</span>
+    </a>
+
+    <nav class="desktop-nav" aria-label="Main navigation">
+      <ul class="nav-list">
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={['nav-link', { active: isActive(item.href) }]}
+              {...(isActive(item.href) ? { 'aria-current': 'page' } : {})}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+        <li>
+          <a
+            href={ctaItem.href}
+            class:list={['btn btn-gold nav-cta', { active: isActive(ctaItem.href) }]}
+            {...(isActive(ctaItem.href) ? { 'aria-current': 'page' } : {})}
+          >
+            {ctaItem.label}
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Menu"
+    >
+      <svg class="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+      <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+  </div>
+
+  <div class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
+    <nav aria-label="Main navigation">
+      <ul class="mobile-nav-list">
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={['mobile-nav-link', { active: isActive(item.href) }]}
+              {...(isActive(item.href) ? { 'aria-current': 'page' } : {})}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+        <li class="mobile-cta-wrapper">
+          <a href={ctaItem.href} class="btn btn-gold mobile-cta">
+            {ctaItem.label}
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #fff;
+    box-shadow: var(--shadow-nav);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--nav-height-mobile);
+  }
+
+  @media (min-width: 1024px) {
+    .header-inner {
+      height: var(--nav-height);
+    }
+  }
+
+  /* Logo */
+  .logo-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .logo-img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+  }
+
+  .logo-text {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--color-green-800);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  /* Desktop nav */
+  .desktop-nav {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .desktop-nav {
+      display: block;
+    }
+  }
+
+  .nav-list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    list-style: none;
+  }
+
+  .nav-link {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    padding: var(--space-2) 0;
+    border-bottom: 2px solid transparent;
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--color-green-800);
+    border-bottom-color: var(--color-gold-600);
+  }
+
+  .nav-cta {
+    padding: 8px 20px;
+    font-size: 0.8125rem;
+    min-height: 36px;
+  }
+
+  /* Hamburger toggle */
+  .menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-green-800);
+    padding: 0;
+  }
+
+  .icon-close {
+    display: none;
+  }
+
+  .menu-toggle[aria-expanded='true'] .icon-menu {
+    display: none;
+  }
+
+  .menu-toggle[aria-expanded='true'] .icon-close {
+    display: block;
+  }
+
+  @media (min-width: 1024px) {
+    .menu-toggle {
+      display: none;
+    }
+  }
+
+  /* Mobile menu overlay */
+  .mobile-menu {
+    position: fixed;
+    top: var(--nav-height-mobile);
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: var(--color-green-900);
+    transform: translateX(100%);
+    transition: transform 300ms ease-in-out;
+    z-index: 99;
+    overflow-y: auto;
+    visibility: hidden;
+  }
+
+  .mobile-menu.is-open {
+    transform: translateX(0);
+    visibility: visible;
+  }
+
+  .mobile-nav-list {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-8) var(--space-6);
+    list-style: none;
+  }
+
+  .mobile-nav-link {
+    display: block;
+    padding: var(--space-6) 0;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: color var(--transition-fast);
+  }
+
+  .mobile-nav-link:hover,
+  .mobile-nav-link.active {
+    color: #fff;
+  }
+
+  .mobile-nav-link.active {
+    border-bottom-color: var(--color-gold-600);
+  }
+
+  .mobile-cta-wrapper {
+    padding-top: var(--space-8);
+  }
+
+  .mobile-cta {
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-menu {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector('.menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  if (toggle && menu) {
+    const focusableEls = () => menu.querySelectorAll('a, button');
+
+    function openMenu() {
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Close menu');
+      menu.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      const first = focusableEls()[0] as HTMLElement;
+      first?.focus();
+    }
+
+    function closeMenu() {
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Menu');
+      menu.classList.remove('is-open');
+      document.body.style.overflow = '';
+      (toggle as HTMLElement).focus();
+    }
+
+    toggle.addEventListener('click', () => {
+      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+      isOpen ? closeMenu() : openMenu();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.classList.contains('is-open')) {
+        closeMenu();
+      }
+    });
+
+    menu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => closeMenu());
+    });
+  }
+</script>

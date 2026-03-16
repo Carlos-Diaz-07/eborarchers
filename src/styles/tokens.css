@@ -1,0 +1,88 @@
+/* ==========================================================================
+   Design Tokens — Ebor Archers of York
+   All design decisions as CSS custom properties.
+   ========================================================================== */
+
+:root {
+  /* ---- Colors: Primary (from badge) ---- */
+  --color-green-900: #0B3D2E;
+  --color-green-800: #0F5038;
+  --color-green-700: #147A4F;
+  --color-green-600: #1A9963;
+  --color-green-100: #E8F5EE;
+  --color-green-50:  #F2FAF6;
+
+  /* ---- Colors: Gold accent (from badge lettering) ---- */
+  --color-gold-600:  #C8960C;
+  --color-gold-500:  #D4A71A;
+  --color-gold-400:  #E8C54A;
+  --color-gold-100:  #FBF4DC;
+  --color-gold-accessible: #9E7B1F;
+
+  /* ---- Colors: Neutrals ---- */
+  --color-text:       #1a1a1a;
+  --color-text-muted: #4B5563;
+  --color-text-light: #9CA3AF;
+  --color-border:     #E5E7EB;
+  --color-bg:         #ffffff;
+  --color-bg-alt:     #f7f5f2;
+  --color-bg-dark:    #0B3D2E;
+
+  /* ---- Colors: Semantic ---- */
+  --color-success: #16A34A;
+  --color-warning: #D97706;
+  --color-error:   #DC2626;
+  --color-info:    #2563EB;
+
+  /* ---- Typography ---- */
+  --font-heading: 'Barlow Semi Condensed', system-ui, sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+
+  --text-hero: clamp(2.25rem, 5vw, 3.5rem);
+  --text-h1:   clamp(1.875rem, 4vw, 2.625rem);
+  --text-h2:   clamp(1.5rem, 3vw, 2rem);
+  --text-h3:   clamp(1.25rem, 2.5vw, 1.5rem);
+  --text-h4:   clamp(1.125rem, 2vw, 1.25rem);
+  --text-lg:   clamp(1.125rem, 1.5vw, 1.25rem);
+  --text-base: 1rem;
+  --text-sm:   0.875rem;
+  --text-xs:   0.75rem;
+
+  /* ---- Spacing (4px base) ---- */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  /* ---- Shadows ---- */
+  --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-md:  0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg:  0 8px 24px rgba(0, 0, 0, 0.1);
+  --shadow-nav: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+  /* ---- Border Radius ---- */
+  --radius-sm:   4px;
+  --radius-md:   6px;
+  --radius-lg:   8px;
+  --radius-xl:   12px;
+  --radius-full: 9999px;
+
+  /* ---- Transitions ---- */
+  --transition-fast:   150ms ease;
+  --transition-normal: 300ms ease;
+  --transition-slow:   500ms ease-out;
+
+  /* ---- Layout ---- */
+  --container-max:      1180px;
+  --container-narrow:   48rem;
+  --nav-height:         72px;
+  --nav-height-mobile:  64px;
+}

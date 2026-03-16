@@ -1,0 +1,152 @@
+backend:
+  name: github
+  repo: Carlos-Diaz-07/eborarchers
+  branch: main
+
+media_folder: "public/images"
+public_folder: "/images"
+
+collections:
+  # ── News ──────────────────────────────────────────────
+  - name: "news"
+    label: "News"
+    folder: "src/content/news"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "Tournament Results", value: "tournament-results" }
+          - { label: "Club News", value: "club-news" }
+          - { label: "Club Events", value: "club-events" }
+          - { label: "League Updates", value: "league-updates" }
+          - { label: "League Results", value: "league-results" }
+          - { label: "Member Achievements", value: "member-achievements" }
+          - { label: "Season Update", value: "season-update" }
+          - { label: "Beginners", value: "beginners" }
+          - { label: "External Competitions", value: "external-competitions" }
+          - { label: "Social", value: "social" }
+      - { label: "Excerpt", name: "excerpt", widget: "text", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  # ── Venues ────────────────────────────────────────────
+  - name: "venues"
+    label: "Venues"
+    folder: "src/content/venues"
+    create: false
+    fields:
+      - { label: "Name", name: "title", widget: "string" }
+      - label: "Type"
+        name: "type"
+        widget: "select"
+        options:
+          - { label: "Indoor", value: "indoor" }
+          - { label: "Outdoor", value: "outdoor" }
+      - { label: "Address", name: "address", widget: "string" }
+      - { label: "Postcode", name: "postcode", widget: "string" }
+      - { label: "Map Image", name: "mapImage", widget: "image", required: false }
+      - { label: "Display Order", name: "order", widget: "number", value_type: "int", min: 1 }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  # ── Gallery ───────────────────────────────────────────
+  - name: "gallery"
+    label: "Gallery"
+    folder: "src/content/gallery"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Alt Text", name: "alt", widget: "string" }
+      - { label: "Caption", name: "caption", widget: "string", required: false }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        required: false
+        options:
+          - { label: "Club Shoot", value: "club-shoot" }
+          - { label: "Competition", value: "competition" }
+          - { label: "Social", value: "social" }
+          - { label: "Scenery", value: "scenery" }
+          - { label: "Training", value: "training" }
+      - { label: "Featured", name: "featured", widget: "boolean", default: false, required: false }
+
+  # ── Events ────────────────────────────────────────────
+  - name: "events"
+    label: "Events"
+    folder: "src/content/events"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "End Date", name: "endDate", widget: "datetime", required: false }
+      - label: "Venue"
+        name: "venue"
+        widget: "relation"
+        collection: "venues"
+        search_fields: ["title"]
+        value_field: "{{slug}}"
+        display_fields: ["title"]
+        required: false
+      - { label: "Description", name: "description", widget: "text", required: false }
+      - label: "Type"
+        name: "type"
+        widget: "select"
+        options:
+          - { label: "Club Shoot", value: "club-shoot" }
+          - { label: "Competition", value: "competition" }
+          - { label: "League Match", value: "league" }
+          - { label: "Social Event", value: "social" }
+          - { label: "Beginners Course", value: "beginners-course" }
+          - { label: "AGM", value: "agm" }
+          - { label: "Other", value: "other" }
+      - { label: "External Link", name: "externalLink", widget: "string", required: false }
+
+  # ── Pages (singletons) ───────────────────────────────
+  - name: "pages"
+    label: "Pages"
+    files:
+      - label: "Join Us"
+        name: "join-us"
+        file: "src/content/pages/join-us.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Description", name: "description", widget: "string" }
+          - label: "Membership Fees"
+            name: "fees"
+            widget: "list"
+            fields:
+              - { label: "Category", name: "category", widget: "string" }
+              - { label: "Annual Fee", name: "price", widget: "string" }
+              - { label: "Notes", name: "notes", widget: "string", required: false }
+          - { label: "Beginners Course Fee", name: "beginners_price", widget: "string" }
+          - { label: "Body", name: "body", widget: "markdown" }
+
+      - label: "Shooting Times"
+        name: "times"
+        file: "src/content/pages/times.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Description", name: "description", widget: "string" }
+          - { label: "Outdoor Heading", name: "outdoor_heading", widget: "string" }
+          - { label: "Outdoor Details", name: "outdoor_text", widget: "markdown" }
+          - { label: "Indoor Heading", name: "indoor_heading", widget: "string" }
+          - { label: "Indoor Details", name: "indoor_text", widget: "markdown" }
+
+      - label: "Home"
+        name: "home"
+        file: "src/content/pages/home.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Description", name: "description", widget: "string" }
+          - { label: "Hero Heading", name: "hero_heading", widget: "string" }
+          - { label: "Hero Subheading", name: "hero_subheading", widget: "string", required: false }
+          - { label: "About Heading", name: "about_heading", widget: "string" }
+          - { label: "About Text", name: "about_text", widget: "markdown" }

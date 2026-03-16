@@ -1,0 +1,269 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+export async function getStaticPaths() {
+  const newsArticles = await getCollection('news');
+  return newsArticles.map((article) => ({
+    params: { slug: article.id },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+
+const formattedDate = new Date(article.data.date).toLocaleDateString('en-GB', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<BaseLayout
+  title={`${article.data.title} - Ebor Archers of York`}
+  description={article.data.excerpt || `News from Ebor Archers of York: ${article.data.title}`}
+>
+  
+    <div class="article-hero">
+      <div class="container">
+        <nav aria-label="Breadcrumb" class="breadcrumb">
+          <ol>
+            <li><a href={`${base}/`}>Home</a></li>
+            <li><a href={`${base}/news`}>News</a></li>
+            <li><span aria-current="page">{article.data.title}</span></li>
+          </ol>
+        </nav>
+        <h1>{article.data.title}</h1>
+        <div class="article-meta">
+          <time datetime={new Date(article.data.date).toISOString().split('T')[0]}>
+            {formattedDate}
+          </time>
+          {article.data.category && (
+            <span class="article-category">{article.data.category}</span>
+          )}
+        </div>
+      </div>
+    </div>
+
+    <article class="article-content">
+      <div class="container narrow">
+        <div class="prose">
+          <Content />
+        </div>
+
+        <nav class="article-nav" aria-label="Article navigation">
+          <a href={`${base}/news`} class="back-link">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            Back to all news
+          </a>
+        </nav>
+      </div>
+    </article>
+  
+</BaseLayout>
+
+<style>
+  .container {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--space-4);
+  }
+
+  @media (min-width: 768px) {
+    .container {
+      padding-inline: var(--space-8);
+    }
+  }
+
+  .narrow {
+    max-width: var(--container-narrow);
+  }
+
+  /* Article Hero */
+  .article-hero {
+    background: var(--color-green-800);
+    padding: var(--space-24) 0 var(--space-12);
+  }
+
+  .breadcrumb ol {
+    display: flex;
+    gap: var(--space-2);
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-6);
+    flex-wrap: wrap;
+  }
+
+  .breadcrumb li {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .breadcrumb li + li::before {
+    content: '/';
+    margin-right: var(--space-2);
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .breadcrumb a:hover {
+    color: white;
+  }
+
+  .breadcrumb a:focus-visible {
+    outline: 2px solid var(--color-gold-600);
+    outline-offset: 2px;
+  }
+
+  .breadcrumb [aria-current="page"] {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .article-hero h1 {
+    font-family: var(--font-heading);
+    font-size: var(--text-h1);
+    font-weight: 700;
+    color: white;
+    line-height: 1.15;
+    margin-bottom: var(--space-4);
+  }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .article-meta time {
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .article-category {
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-gold-400);
+  }
+
+  /* Article Content */
+  .article-content {
+    padding: var(--space-12) 0 var(--space-16);
+    background: var(--color-bg);
+  }
+
+  .prose {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: 1.7;
+    color: var(--color-text-muted);
+  }
+
+  .prose :global(h2) {
+    font-family: var(--font-heading);
+    font-size: var(--text-h2);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-4);
+  }
+
+  .prose :global(h3) {
+    font-family: var(--font-heading);
+    font-size: var(--text-h3);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-top: var(--space-6);
+    margin-bottom: var(--space-3);
+  }
+
+  .prose :global(p) {
+    margin-bottom: var(--space-4);
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin-bottom: var(--space-4);
+    padding-left: var(--space-6);
+  }
+
+  .prose :global(li) {
+    margin-bottom: var(--space-2);
+  }
+
+  .prose :global(a) {
+    color: var(--color-green-600);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .prose :global(a:hover) {
+    color: var(--color-green-800);
+  }
+
+  .prose :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+    margin: var(--space-6) 0;
+  }
+
+  .prose :global(blockquote) {
+    border-left: 3px solid var(--color-gold-600);
+    padding-left: var(--space-4);
+    margin: var(--space-6) 0;
+    color: var(--color-text);
+    font-style: italic;
+  }
+
+  /* Article Nav */
+  .article-nav {
+    margin-top: var(--space-12);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-green-600);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    transition: color var(--transition-fast);
+  }
+
+  .back-link:hover {
+    color: var(--color-green-800);
+  }
+
+  .back-link:focus-visible {
+    outline: 2px solid var(--color-gold-600);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .breadcrumb a,
+    .back-link {
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>

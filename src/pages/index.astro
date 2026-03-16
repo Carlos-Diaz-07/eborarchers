@@ -1,0 +1,376 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Card from '../components/Card.astro';
+import { getCollection, getEntry } from 'astro:content';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const page = await getEntry('pages', 'home');
+const { title, description, hero_heading, hero_subheading, about_heading, about_text } = page!.data;
+
+const galleryImages = await getCollection('gallery');
+const featuredImages = galleryImages.filter((img) => img.data.featured).slice(0, 4);
+---
+
+<BaseLayout title={title} description={description}>
+
+    <Hero
+      image={`${base}/images/heroes/6-gold_a4e00b6e41dfeaaf.jpg`}
+      title={hero_heading!}
+      subtitle={hero_subheading}
+      ctaText="Join the Club"
+      ctaHref={`${base}/join-us`}
+    />
+
+    <!-- About Section -->
+    <section class="about" aria-labelledby="about-heading">
+      <div class="container">
+        <SectionHeading title={about_heading!} subtitle="York's friendly archery club since 1970" />
+        <div class="about-content">
+          <div class="about-text">
+            {about_text!.split('\n\n').map((paragraph: string) => (
+              <p>{paragraph}</p>
+            ))}
+          </div>
+          <div class="about-badges">
+            <p class="affiliations-label">Affiliated with</p>
+            <div class="badge-row">
+              <img src={`${base}/images/logos/archery-gb.png`} alt="Archery GB" width="80" height="80" loading="lazy" />
+              <img src={`${base}/images/logos/yorkshire-archery-association.png`} alt="Yorkshire Archery Association" width="80" height="80" loading="lazy" />
+              <img src={`${base}/images/logos/northern-counties-archery-society.png`} alt="Northern Counties Archery Society" width="80" height="80" loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature Cards -->
+    <section class="features" aria-labelledby="features-heading">
+      <div class="container">
+        <h2 id="features-heading" class="visually-hidden">Get Started</h2>
+        <div class="card-grid">
+          <Card
+            image={`${base}/images/heroes/home1.jpg`}
+            title="Venues & Times"
+            description="We have both outdoor and indoor shooting facilities. Find out where and when we shoot."
+            href={`${base}/venues-and-times`}
+          />
+          <Card
+            image={`${base}/images/heroes/arrows-in-the-ground.jpg`}
+            title="Join Us"
+            description="For beginners, improvers and experienced archers. Start your archery journey today."
+            href={`${base}/join-us`}
+          />
+          <Card
+            image={`${base}/images/gallery/row-of-archers.jpg`}
+            title="Gallery"
+            description="Browse photos from our outdoor and indoor sessions, competitions and club events."
+            href={`${base}/gallery`}
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Gallery Preview -->
+    <section class="gallery-preview" aria-labelledby="gallery-heading">
+      <div class="container">
+        <SectionHeading title="From the Field" subtitle="A glimpse of life at Ebor Archers" />
+        <div class="gallery-grid">
+          {featuredImages.map((photo) => (
+            <figure class="gallery-item">
+              <img
+                src={`${base}${photo.data.image}`}
+                alt={photo.data.alt}
+                width="400"
+                height="300"
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption>{photo.data.title}</figcaption>
+            </figure>
+          ))}
+        </div>
+        <div class="gallery-cta">
+          <a href={`${base}/gallery`} class="btn-outline">View Full Gallery</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Band -->
+    <section class="cta-band" aria-labelledby="cta-heading">
+      <div class="container">
+        <h2 id="cta-heading">Ready to Try Archery?</h2>
+        <p>Whether you're a complete beginner or an experienced archer, we'd love to welcome you.</p>
+        <a href={`${base}/join-us`} class="btn-gold">Join Ebor Archers</a>
+      </div>
+    </section>
+  
+</BaseLayout>
+
+<style>
+  /* About Section */
+  .about {
+    padding: var(--space-16) 0;
+    background: var(--color-bg);
+  }
+
+  .container {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--space-4);
+  }
+
+  @media (min-width: 768px) {
+    .container {
+      padding-inline: var(--space-8);
+    }
+  }
+
+  .about-content {
+    display: grid;
+    gap: var(--space-8);
+    margin-top: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .about-content {
+      grid-template-columns: 2fr 1fr;
+      align-items: start;
+    }
+  }
+
+  .about-text p {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .about-text p:last-child {
+    margin-bottom: 0;
+  }
+
+  .affiliations-label {
+    font-family: var(--font-heading);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .badge-row {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .badge-row img {
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: filter var(--transition-normal), opacity var(--transition-normal);
+  }
+
+  .badge-row img:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+  }
+
+  /* Feature Cards */
+  .features {
+    padding: var(--space-16) 0;
+    background: var(--color-bg-alt);
+  }
+
+  .card-grid {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  @media (min-width: 768px) {
+    .card-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .card-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* Gallery Preview */
+  .gallery-preview {
+    padding: var(--space-16) 0;
+    background: var(--color-bg);
+  }
+
+  .gallery-grid {
+    display: grid;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+  }
+
+  @media (min-width: 640px) {
+    .gallery-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .gallery-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    margin: 0;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition-normal);
+  }
+
+  .gallery-item:hover img {
+    transform: scale(1.03);
+  }
+
+  .gallery-item figcaption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--space-3) var(--space-4);
+    background: linear-gradient(transparent, rgba(11, 61, 46, 0.85));
+    color: white;
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    transform: translateY(100%);
+    transition: transform var(--transition-normal);
+  }
+
+  .gallery-item:hover figcaption {
+    transform: translateY(0);
+  }
+
+  .gallery-cta {
+    text-align: center;
+    margin-top: var(--space-8);
+  }
+
+  /* CTA Band */
+  .cta-band {
+    padding: var(--space-16) 0;
+    background: var(--color-green-800);
+    text-align: center;
+  }
+
+  .cta-band h2 {
+    font-family: var(--font-heading);
+    font-size: var(--text-h1);
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin-bottom: var(--space-4);
+  }
+
+  .cta-band p {
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: var(--space-8);
+    max-width: 36rem;
+    margin-inline: auto;
+  }
+
+  /* Buttons */
+  .btn-gold {
+    display: inline-block;
+    background: var(--color-gold-600);
+    color: var(--color-green-900);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 16px 36px;
+    border-radius: var(--radius-md);
+    border: none;
+    cursor: pointer;
+    transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .btn-gold:hover {
+    background: var(--color-gold-500);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(200, 150, 12, 0.3);
+  }
+
+  .btn-gold:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
+  }
+
+  .btn-outline {
+    display: inline-block;
+    background: transparent;
+    color: var(--color-green-800);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 12px 28px;
+    border: 2px solid var(--color-green-800);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .btn-outline:hover {
+    background: var(--color-green-800);
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  .btn-outline:focus-visible {
+    outline: 2px solid var(--color-gold-600);
+    outline-offset: 2px;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gallery-item img,
+    .gallery-item figcaption,
+    .badge-row img {
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>

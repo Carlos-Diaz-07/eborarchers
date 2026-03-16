@@ -1,0 +1,213 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const currentYear = new Date().getFullYear();
+
+const quickLinks = [
+  { label: 'Home', href: `${base}/` },
+  { label: 'Venues & Times', href: `${base}/venues-and-times/` },
+  { label: 'Join Us', href: `${base}/join-us/` },
+  { label: 'Gallery', href: `${base}/gallery/` },
+  { label: 'News', href: `${base}/news/` },
+];
+
+const affiliations = [
+  { name: 'Archery GB', logo: `${base}/images/logos/archery-gb.png` },
+  { name: 'Yorkshire Archery Association', logo: `${base}/images/logos/yorkshire-archery-association.png` },
+  { name: 'Northern Counties Archery Society', logo: `${base}/images/logos/northern-counties-archery-society.png` },
+];
+---
+
+<footer class="site-footer" role="contentinfo">
+  <div class="container footer-grid">
+    <div class="footer-col footer-about">
+      <a href={`${base}/`} class="footer-logo-link" aria-label="Ebor Archers of York — Home">
+        <img
+          src={`${base}/images/logos/ebor-archers.png`}
+          alt=""
+          class="footer-logo"
+          width="48"
+          height="48"
+        />
+        <span class="footer-club-name">Ebor Archers</span>
+      </a>
+      <p class="footer-tagline">York's friendly archery club since 1970</p>
+    </div>
+
+    <div class="footer-col">
+      <h3 class="footer-heading">Quick Links</h3>
+      <nav aria-label="Footer navigation">
+        <ul class="footer-links">
+          {quickLinks.map((link) => (
+            <li><a href={link.href}>{link.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+
+    <div class="footer-col">
+      <h3 class="footer-heading">Contact</h3>
+      <address class="footer-contact">
+        <p>Ray Chaplin</p>
+        <p>
+          <a href="mailto:ray.chaplin@ntlworld.com">ray.chaplin@ntlworld.com</a>
+        </p>
+      </address>
+    </div>
+
+    <div class="footer-col">
+      <h3 class="footer-heading">Affiliated with</h3>
+      <div class="affiliation-logos">
+        {affiliations.map((org) => (
+          <img
+            src={org.logo}
+            alt={`${org.name} logo`}
+            class="affiliation-logo"
+            width="80"
+            height="40"
+            loading="lazy"
+          />
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container">
+      <p>&copy; {currentYear} Ebor Archers, York. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--color-green-900);
+    color: rgba(255, 255, 255, 0.7);
+    padding-block: var(--space-16);
+  }
+
+  .footer-grid {
+    display: grid;
+    gap: var(--space-10);
+  }
+
+  @media (min-width: 640px) {
+    .footer-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .footer-grid {
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: var(--space-8);
+    }
+  }
+
+  .footer-logo-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    text-decoration: none;
+    margin-bottom: var(--space-3);
+  }
+
+  .footer-logo {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+  }
+
+  .footer-club-name {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .footer-tagline {
+    font-size: var(--text-sm);
+    margin-top: var(--space-2);
+    max-width: none;
+  }
+
+  .footer-heading {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    color: var(--color-gold-400);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: var(--space-4);
+  }
+
+  .footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .footer-links a {
+    font-size: var(--text-sm);
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .footer-links a:hover {
+    color: #fff;
+  }
+
+  .footer-contact {
+    font-style: normal;
+    font-size: var(--text-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .footer-contact a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color var(--transition-fast);
+  }
+
+  .footer-contact a:hover {
+    color: #fff;
+  }
+
+  .affiliation-logos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .affiliation-logo {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+    filter: grayscale(100%) brightness(1.5);
+    opacity: 0.7;
+    transition: filter var(--transition-normal), opacity var(--transition-normal);
+  }
+
+  .affiliation-logo:hover {
+    filter: none;
+    opacity: 1;
+  }
+
+  .footer-bottom {
+    margin-top: var(--space-12);
+    padding-top: var(--space-6);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .footer-bottom p {
+    font-size: var(--text-xs);
+    color: rgba(255, 255, 255, 0.5);
+    max-width: none;
+  }
+</style>
