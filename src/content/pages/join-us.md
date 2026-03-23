@@ -3,14 +3,11 @@ title: "Join Us - Ebor Archers of York"
 description: "Join Ebor Archers of York. Membership info, fees, beginners courses and how to get started with archery."
 fees:
   - category: "Senior"
-    price: "£135.00"
-    notes: "Aged 25 and over"
-  - category: "Senior (18-24 FTE)"
-    price: "£79.00"
-    notes: "Aged 18–24 in full-time education"
+    price: "£159.00"
+    notes: "Aged 21 and over"
   - category: "Junior"
-    price: "£38.60"
-    notes: "Under 18"
+    price: "£55.90"
+    notes: "Under 21"
 beginners_price: "65"
 ---
 
