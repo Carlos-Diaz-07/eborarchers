@@ -6,13 +6,13 @@ import { getCollection } from 'astro:content';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-const newsArticles = await getCollection('news');
+const newsArticles = await getCollection('news', ({ data }) => !data.draft);
 const sortedArticles = newsArticles.sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
 ---
 
-<BaseLayout title="News - Ebor Archers of York" description="Latest news and updates from Ebor Archers of York. Tournament results, club events and announcements.">
+<BaseLayout title="News" description="Latest news and updates from Ebor Archers of York. Tournament results, club events and announcements.">
   
     <Hero
       image={`${base}/images/heroes/home3.jpg`}
@@ -22,7 +22,7 @@ const sortedArticles = newsArticles.sort(
 
     <section class="news" aria-labelledby="news-heading">
       <div class="container">
-        <SectionHeading title="Latest News" subtitle="Tournament results, events and announcements" />
+        <SectionHeading id="news-heading" title="Latest News" subtitle="Tournament results, events and announcements" />
 
         {sortedArticles.length > 0 ? (
           <div class="news-grid">
@@ -67,19 +67,6 @@ const sortedArticles = newsArticles.sort(
 </BaseLayout>
 
 <style>
-  .container {
-    width: 100%;
-    max-width: var(--container-max);
-    margin-inline: auto;
-    padding-inline: var(--space-4);
-  }
-
-  @media (min-width: 768px) {
-    .container {
-      padding-inline: var(--space-8);
-    }
-  }
-
   .news {
     padding: var(--space-16) 0;
     background: var(--color-bg);
@@ -208,18 +195,6 @@ const sortedArticles = newsArticles.sort(
     font-family: var(--font-body);
     font-size: var(--text-lg);
     color: var(--color-text-muted);
-  }
-
-  .visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
   }
 
   @media (prefers-reduced-motion: reduce) {

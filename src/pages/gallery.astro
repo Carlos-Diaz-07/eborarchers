@@ -9,10 +9,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const galleryImages = await getCollection('gallery');
 ---
 
-<BaseLayout title="Gallery - Ebor Archers of York" description="Photos from Ebor Archers of York. Indoor and outdoor archery, club competitions and events.">
-  <Fragment slot="head">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
-  </Fragment>
+<BaseLayout title="Gallery" description="Photos from Ebor Archers of York. Indoor and outdoor archery, club competitions and events.">
 
   
     <Hero
@@ -55,7 +52,8 @@ const galleryImages = await getCollection('gallery');
 </BaseLayout>
 
 <script>
-  import GLightbox from 'https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js';
+  import GLightbox from 'glightbox';
+  import 'glightbox/dist/css/glightbox.min.css';
 
   const lightbox = GLightbox({
     selector: '.glightbox',
@@ -67,19 +65,6 @@ const galleryImages = await getCollection('gallery');
 </script>
 
 <style>
-  .container {
-    width: 100%;
-    max-width: var(--container-max);
-    margin-inline: auto;
-    padding-inline: var(--space-4);
-  }
-
-  @media (min-width: 768px) {
-    .container {
-      padding-inline: var(--space-8);
-    }
-  }
-
   .gallery {
     padding: var(--space-16) 0;
     background: var(--color-bg);

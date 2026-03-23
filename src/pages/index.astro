@@ -14,7 +14,7 @@ const galleryImages = await getCollection('gallery');
 const featuredImages = galleryImages.filter((img) => img.data.featured).slice(0, 4);
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title="Home" description={description}>
 
     <Hero
       image={`${base}/images/heroes/6-gold_a4e00b6e41dfeaaf.jpg`}
@@ -27,7 +27,7 @@ const featuredImages = galleryImages.filter((img) => img.data.featured).slice(0,
     <!-- About Section -->
     <section class="about" aria-labelledby="about-heading">
       <div class="container">
-        <SectionHeading title={about_heading!} subtitle="York's friendly archery club since 1968" />
+        <SectionHeading id="about-heading" title={about_heading!} subtitle="York's friendly archery club since 1968" />
         <div class="about-content">
           <div class="about-text">
             {about_text!.split('\n\n').map((paragraph: string) => (
@@ -76,7 +76,7 @@ const featuredImages = galleryImages.filter((img) => img.data.featured).slice(0,
     <!-- Featured Gallery Preview -->
     <section class="gallery-preview" aria-labelledby="gallery-heading">
       <div class="container">
-        <SectionHeading title="From the Field" subtitle="A glimpse of life at Ebor Archers" />
+        <SectionHeading id="gallery-heading" title="From the Field" subtitle="A glimpse of life at Ebor Archers" />
         <div class="gallery-grid">
           {featuredImages.map((photo) => (
             <figure class="gallery-item">
@@ -93,7 +93,7 @@ const featuredImages = galleryImages.filter((img) => img.data.featured).slice(0,
           ))}
         </div>
         <div class="gallery-cta">
-          <a href={`${base}/gallery`} class="btn-outline">View Full Gallery</a>
+          <a href={`${base}/gallery`} class="btn btn-outline">View Full Gallery</a>
         </div>
       </div>
     </section>
@@ -103,7 +103,7 @@ const featuredImages = galleryImages.filter((img) => img.data.featured).slice(0,
       <div class="container">
         <h2 id="cta-heading">Ready to Try Archery?</h2>
         <p>Whether you're a complete beginner or an experienced archer, we'd love to welcome you.</p>
-        <a href={`${base}/join-us`} class="btn-gold">Join Ebor Archers</a>
+        <a href={`${base}/join-us`} class="btn btn-gold">Join Ebor Archers</a>
       </div>
     </section>
   
@@ -114,19 +114,6 @@ const featuredImages = galleryImages.filter((img) => img.data.featured).slice(0,
   .about {
     padding: var(--space-16) 0;
     background: var(--color-bg);
-  }
-
-  .container {
-    width: 100%;
-    max-width: var(--container-max);
-    margin-inline: auto;
-    padding-inline: var(--space-4);
-  }
-
-  @media (min-width: 768px) {
-    .container {
-      padding-inline: var(--space-8);
-    }
   }
 
   .about-content {
@@ -266,6 +253,12 @@ const featuredImages = galleryImages.filter((img) => img.data.featured).slice(0,
     transform: translateY(0);
   }
 
+  @media (hover: none) {
+    .gallery-item figcaption {
+      transform: translateY(0);
+    }
+  }
+
   .gallery-cta {
     text-align: center;
     margin-top: var(--space-8);
@@ -295,75 +288,6 @@ const featuredImages = galleryImages.filter((img) => img.data.featured).slice(0,
     margin-bottom: var(--space-8);
     max-width: 36rem;
     margin-inline: auto;
-  }
-
-  /* Buttons */
-  .btn-gold {
-    display: inline-block;
-    background: var(--color-gold-600);
-    color: var(--color-green-900);
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: var(--text-sm);
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 16px 36px;
-    border-radius: var(--radius-md);
-    border: none;
-    cursor: pointer;
-    transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
-  }
-
-  .btn-gold:hover {
-    background: var(--color-gold-500);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(200, 150, 12, 0.3);
-  }
-
-  .btn-gold:focus-visible {
-    outline: 2px solid white;
-    outline-offset: 2px;
-  }
-
-  .btn-outline {
-    display: inline-block;
-    background: transparent;
-    color: var(--color-green-800);
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: var(--text-sm);
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 12px 28px;
-    border: 2px solid var(--color-green-800);
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
-  }
-
-  .btn-outline:hover {
-    background: var(--color-green-800);
-    color: white;
-    transform: translateY(-1px);
-  }
-
-  .btn-outline:focus-visible {
-    outline: 2px solid var(--color-gold-600);
-    outline-offset: 2px;
-  }
-
-  .visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
   }
 
   @media (prefers-reduced-motion: reduce) {

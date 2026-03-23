@@ -74,8 +74,8 @@ function isActive(href: string): boolean {
     </button>
   </div>
 
-  <div class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
-    <nav aria-label="Main navigation">
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <nav aria-label="Main navigation (mobile)">
       <ul class="mobile-nav-list">
         {navItems.map((item) => (
           <li>
@@ -287,15 +287,24 @@ function isActive(href: string): boolean {
 <script>
   const toggle = document.querySelector('.menu-toggle');
   const menu = document.getElementById('mobile-menu');
+  const mainContent = document.getElementById('main');
+  const footer = document.querySelector('footer');
+
   if (toggle && menu) {
-    const focusableEls = () => menu.querySelectorAll('a, button');
+    const focusableEls = () =>
+      menu.querySelectorAll<HTMLElement>('a[href], button, [tabindex]:not([tabindex="-1"])');
 
     function openMenu() {
       toggle.setAttribute('aria-expanded', 'true');
       toggle.setAttribute('aria-label', 'Close menu');
       menu.classList.add('is-open');
+      menu.removeAttribute('aria-hidden');
       document.body.style.overflow = 'hidden';
-      const first = focusableEls()[0] as HTMLElement;
+
+      mainContent?.setAttribute('inert', '');
+      footer?.setAttribute('inert', '');
+
+      const first = focusableEls()[0];
       first?.focus();
     }
 
@@ -303,7 +312,12 @@ function isActive(href: string): boolean {
       toggle.setAttribute('aria-expanded', 'false');
       toggle.setAttribute('aria-label', 'Menu');
       menu.classList.remove('is-open');
+      menu.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
+
+      mainContent?.removeAttribute('inert');
+      footer?.removeAttribute('inert');
+
       (toggle as HTMLElement).focus();
     }
 
@@ -315,6 +329,31 @@ function isActive(href: string): boolean {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && menu.classList.contains('is-open')) {
         closeMenu();
+        return;
+      }
+
+      if (e.key === 'Tab' && menu.classList.contains('is-open')) {
+        const els = focusableEls();
+        const firstEl = els[0];
+        const lastEl = els[els.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstEl) {
+            e.preventDefault();
+            (toggle as HTMLElement).focus();
+          } else if (document.activeElement === toggle) {
+            e.preventDefault();
+            lastEl?.focus();
+          }
+        } else {
+          if (document.activeElement === lastEl) {
+            e.preventDefault();
+            (toggle as HTMLElement).focus();
+          } else if (document.activeElement === toggle) {
+            e.preventDefault();
+            firstEl?.focus();
+          }
+        }
       }
     });
 

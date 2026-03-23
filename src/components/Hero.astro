@@ -10,7 +10,7 @@ interface Props {
 const { image, title, subtitle, ctaText, ctaHref } = Astro.props;
 ---
 
-<section class="hero" aria-label={title}>
+<section class="hero" aria-labelledby="hero-heading">
   <img
     src={image}
     alt=""
@@ -22,7 +22,7 @@ const { image, title, subtitle, ctaText, ctaHref } = Astro.props;
   />
   <div class="hero-overlay"></div>
   <div class="container hero-content">
-    <h1 class="hero-title">{title}</h1>
+    <h1 class="hero-title" id="hero-heading">{title}</h1>
     {subtitle && <p class="hero-subtitle">{subtitle}</p>}
     {ctaText && ctaHref && (
       <div class="hero-actions">

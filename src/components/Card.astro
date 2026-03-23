@@ -16,8 +16,6 @@ const {
   href,
   linkText = 'Learn more',
 } = Astro.props;
-
-const Tag = href ? 'a' : 'div';
 ---
 
 <article class:list={['card', { 'card-linked': !!href }]}>
